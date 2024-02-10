@@ -56,7 +56,7 @@ class Subcategory(models.Model):
         unique=True,
         help_text='Наименование подкатегории',
     )
-    slug = models.SlugField(
+    slug_name = models.SlugField(
         verbose_name='slug-имя',
         max_length=250,
         blank=False,
