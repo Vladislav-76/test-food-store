@@ -1,5 +1,7 @@
+from django.db.models import F
 from rest_framework import serializers
 
+from cart.models import Cart
 from goods.models import Category, Subcategory, UnitOfGoogs
 
 
@@ -63,3 +65,31 @@ class GoogsSerializer(serializers.ModelSerializer):
             request.build_absolute_uri(image_url)
             for image_url in images_url
         ]
+
+
+class CartSerializer(serializers.ModelSerializer):
+    """ Сериализатор корзины."""
+
+    owner = serializers.StringRelatedField()
+    goods = serializers.SerializerMethodField()
+    total_amount = serializers.SerializerMethodField()
+    total_sum = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Cart
+        fields = ('id', 'owner', 'goods', 'total_amount', 'total_sum')
+
+    def get_goods(self, cart):
+        return cart.goods.values(
+            'id',
+            'name',
+            'price',
+            amount=F('cart__amount'),
+        )
+
+    def get_total_amount(self, cart):
+        return sum(cart.goods.values_list(F('cart__amount'), flat=True))
+
+    def get_total_sum(self, cart):
+        price_amount = cart.goods.values_list('price', F('cart__amount'))
+        return sum(price * amount for price, amount in price_amount)

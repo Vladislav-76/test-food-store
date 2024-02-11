@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django_resized import ResizedImageField
 
@@ -128,8 +129,14 @@ class UnitOfGoogs(models.Model):
         verbose_name='Цена',
         max_digits=10,
         decimal_places=2,
+        validators=(
+            MinValueValidator(
+                limit_value=0.01,
+                message='Цена товара должна быть положительной'
+            ),
+        ),
         blank=False,
-        help_text='Цена товара'
+        help_text='Цена товара',
     )
     subcategory = models.ForeignKey(
         Subcategory,
