@@ -2,7 +2,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django_resized import ResizedImageField
 
-
 IMAGE_SIZES = {
     'small': [250, 250],
     'average': [500, 500],
@@ -16,7 +15,7 @@ class Category(models.Model):
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
         ordering = ['name']
-    
+
     name = models.CharField(
         verbose_name='Наименование',
         max_length=250,
@@ -49,7 +48,7 @@ class Subcategory(models.Model):
         verbose_name = 'Податегория'
         verbose_name_plural = 'Подкатегории'
         ordering = ['name']
-    
+
     name = models.CharField(
         verbose_name='Наименование',
         max_length=250,
@@ -89,7 +88,7 @@ class UnitOfGoogs(models.Model):
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
         ordering = ['name']
-    
+
     name = models.CharField(
         verbose_name='Наименование',
         max_length=250,

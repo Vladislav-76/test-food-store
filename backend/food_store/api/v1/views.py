@@ -1,22 +1,16 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import ListAPIView
-from rest_framework.mixins import (
-    DestroyModelMixin,
-    CreateModelMixin,
-    ListModelMixin
-)
+from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
+                                   ListModelMixin)
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from api.v1.serialaizers import (
-    CartSerializer,
-    CategorySerializer,
-    GoogsSerializer
-)
-from cart.models import Cart,CartGoods
+from api.v1.serialaizers import (CartSerializer, CategorySerializer,
+                                 GoogsSerializer)
+from cart.models import Cart, CartGoods
 from goods.models import Category, UnitOfGoogs
 
 
@@ -75,14 +69,14 @@ class CartViewSet(
         queryset = Cart.objects.filter(owner=self.request.user)
         return Response(CartSerializer(queryset, many=True).data)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request):
         """Очистка корзины."""
         get_object_or_404(Cart, owner=self.request.user).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @staticmethod
     def validate_goods(data):
-        if not isinstance(data, dict) or not 'goods' in data:
+        if not isinstance(data, dict) or 'goods' not in data:
             return {'Ошибка': '"goods": "Обязательное поле."'}
         if not all(
             {'id', 'amount'}.issubset(item.keys()) for item in data['goods']

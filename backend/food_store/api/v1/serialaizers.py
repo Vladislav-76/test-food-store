@@ -56,7 +56,7 @@ class GoogsSerializer(serializers.ModelSerializer):
 
     def get_images(self, unit_of_goods):
         request = self.context.get('request')
-        images_url =  [
+        images_url = [
             unit_of_goods.image_small.url,
             unit_of_goods.image_average.url,
             unit_of_goods.image_big.url,

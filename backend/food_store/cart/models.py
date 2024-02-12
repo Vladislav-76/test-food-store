@@ -3,7 +3,6 @@ from django.db import models
 
 from goods.models import UnitOfGoogs
 
-
 User = get_user_model()
 
 
